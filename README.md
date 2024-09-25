@@ -119,11 +119,11 @@ Para lanzar la aplicación podemos usar la siguiente secuencia de comandos:
 2. Lanzamos la aplicación de backend
    
     ```shell
-    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 0.0.0.0:8081:5000 --name back-test --network app-test theqvd/simple-app-back
+    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 8081:5000 --name back-test --network app-test theqvd/simple-app-back
     ```
 
 3. Lanzamos la aplicaación de frontend
 
     ```shell
-    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 0.0.0.0:8080:5000 --name front-test -e REMOTE_SERVER=back-test -e REMOTE_PORT=5000 --network=app-test theqvd/simple-app-front
+    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 8080:5000 --name front-test -e REMOTE_SERVER=back-test -e REMOTE_PORT=5000 --network=app-test theqvd/simple-app-front
     ```

@@ -2,7 +2,7 @@ FROM python:3.11-alpine
 
 ARG BACK_OR_FRONT=front 
 ENV BACK_OR_FRONT=$BACK_OR_FRONT
-ARG PORT=5001
+ARG PORT=5000
 ENV APP_PORT=$PORT
 
 # Install dependencies

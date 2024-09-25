@@ -92,13 +92,38 @@ gunicorn -c gunicorn_config.py back:app
 Para comprobar si la app funciona por ejemplo:
 
 ```shell 
-curl -X GET http://127.0.0.1:5001/api/v1/remote                  ✔  07:39:23 PM  
+curl -X GET http://127.0.0.1:5001/api/v1/remote            
 {
   "answer": "hello world from remote"
 }
 
-curl -X GET http://127.0.0.1:5001/api/v1/local                   ✔  07:39:28 PM  
+curl -X GET http://127.0.0.1:5001/api/v1/local            
 {
   "answer": "hello world from front"
 }
 ```
+
+
+## Uso con Docker
+
+Es posible lanzar tanto la parte front como la parte de backend mediante contenedores Docker. La imagen está publicada en dockerhub (usuario [theqvd](https://hub.docker.com/u/theqvd)). Para ello es importante tener en cuenta que por defecto el Dockerfile lanza el gunicorn escuchando en localhost, tanto para la parte de backend como para la parte de frontend.
+
+Para lanzar la aplicación podemos usar la siguiente secuencia de comandos:
+
+1. Creamos una red para la aplicación
+   
+   ```shell 
+   docker network create app-test 
+   ```
+
+2. Lanzamos la aplicación de backend
+   
+    ```shell
+    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 0.0.0.0:8081:5000 --name back-test --network app-test theqvd/simple-app-back
+    ```
+
+3. Lanzamos la aplicaación de frontend
+
+    ```shell
+    docker run -d --rm  -e APP_SERVER=0.0.0.0 -p 0.0.0.0:8080:5000 --name front-test -e REMOTE_SERVER=back-test -e REMOTE_PORT=5000 --network=app-test theqvd/simple-app-front
+    ```
